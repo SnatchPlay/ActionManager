@@ -14,6 +14,7 @@ namespace ActionManager
         public int Category_ID { get; set; }
         public int Supply_ID { get; set; }
         public DateTime StartTime { get; set; }
+        
         public DateTime EndTime { get; set; }
 
         public Action(string Name,float Discount,int Category_Id,int Supply_Id,DateTime StartTime,DateTime EndTime, int id = 0)

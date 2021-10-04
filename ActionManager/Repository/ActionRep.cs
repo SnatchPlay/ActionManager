@@ -54,11 +54,17 @@ namespace ActionManager
             {
 
                 connectionSql.Open();
-                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[Category ID],[Supply ID]) VALUES('{tempObj.Name}', {tempObj.StartTime}, {tempObj.EndTime}, {tempObj.Discount}, {tempObj.Category_ID}, {tempObj.Supply_ID})";
+                string sqlsatrtdate = tempObj.StartTime.ToString("yyyy-MM-dd");
+                string sqlenddate = tempObj.EndTime.ToString("yyyy-MM-dd");
+                //string sqlsatrtdate = tempObj.StartTime.ToString("MM-dd-yyyy");
+                //tring sqlenddate = tempObj.EndTime.ToString("MM-dd-yyyy");
+                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[Category ID],[Supply ID]) VALUES('{tempObj.Name}',"+ sqlsatrtdate+","+ sqlenddate+$", {tempObj.Discount}, {tempObj.Category_ID}, {tempObj.Supply_ID})";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
             }
+            ActionList.Clear();
+            ReadFromDB();
         }
 
         public void DeleteObject(int id)
