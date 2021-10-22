@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActionManager
+namespace DTO
 {
-    interface IRepository
+    class Program
     {
+        static void Main(string[] args)
+        {
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActionManager
+namespace DTO
 {
     public class Action
     {
@@ -14,10 +14,10 @@ namespace ActionManager
         public int Category_ID { get; set; }
         public int Supply_ID { get; set; }
         public DateTime StartTime { get; set; }
-        
         public DateTime EndTime { get; set; }
-
-        public Action(string Name,float Discount,int Category_Id,int Supply_Id,DateTime StartTime,DateTime EndTime, int id = 0)
+        public DateTime RowInsertTime { get; set; }
+        public DateTime RowUpdateTime { get; set; }
+        public Action(string Name, float Discount, int Category_Id, int Supply_Id, DateTime StartTime, DateTime EndTime, DateTime RowInsertTime, DateTime RowUpdateTime, int id = 0)
         {
             this.Name = Name;
             this.Discount = Discount;
@@ -26,6 +26,8 @@ namespace ActionManager
             this.StartTime = StartTime;
             this.EndTime = EndTime;
             this.Id = id;
+            this.RowInsertTime = RowInsertTime;
+            this.RowUpdateTime = RowUpdateTime;
         }
         public string Write()
         {

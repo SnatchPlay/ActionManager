@@ -54,17 +54,6 @@ namespace ActionManager
                 }
             }
             
-            //com.AllActions();
-            //com.AllGoods();
-            //com.ChangeNameAction();
-            //com.AddAction();
-           // com.AllActions();
-           //com.AddGoods();
-            //com.AddGoods();
-            //com.AllGoods();
-            //com.DeleteGoods();
-           // com.AllGoods();
-            //Console.ReadLine();
         }
         
     }

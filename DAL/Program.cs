@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActionManager
+namespace DAL
 {
-    class Repository
+    class Program
     {
+        static void Main(string[] args)
+        {
+        }
     }
 }

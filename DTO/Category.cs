@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ActionManager
+namespace DTO
 {
-   public class Category
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Category(string Name,int id=0)
+        public DateTime RowInsertTime { get; set; }
+        public DateTime RowUpdateTime { get; set; }
+        public Category(string Name, DateTime RowInsertTime, DateTime RowUpdateTime, int id = 0)
         {
             this.Name = Name;
             this.Id = id;
+            this.RowInsertTime = RowInsertTime;
+            this.RowUpdateTime = RowUpdateTime;
         }
         public string Write()
         {

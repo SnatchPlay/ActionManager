@@ -1,18 +1,18 @@
-﻿using ActionManager.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DTO;
+using System.Configuration;
+using Action = DTO.Action;
 
-namespace ActionManager
+namespace DAL
 {
-
-    public class ActionRep : IActionRep
+    public class ActionRep : IRepository<Action>
     {
         List<Action> ActionList;
-        protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=TradingCompany;Integrated Security=True";
+        protected string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+        //protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=TradingCompany;Integrated Security=True";
 
         public ActionRep()
         {
@@ -26,7 +26,7 @@ namespace ActionManager
                 using (SqlCommand comm = connectionSql.CreateCommand())
                 {
                     connectionSql.Open();
-                    comm.CommandText = "select Id, Name, [Start Time], [End Time], Discount, [Category ID], [Supply ID] from Action";
+                    comm.CommandText = "select Id, Name, [Start Time], [End Time], Discount, [Category ID], [Supply ID], RowInsertTime, RowUpdateTime from Action";
 
                     SqlDataReader reader = comm.ExecuteReader();
                     while (reader.Read())
@@ -39,7 +39,9 @@ namespace ActionManager
                         float t_Discount = float.Parse(Convert.ToString(reader["Discount"]));
                         int t_Category_ID = (int)reader["Category ID"];
                         int t_Supply_ID = (int)reader["Supply ID"];
-                        Action tmp = new Action(t_Name, t_Discount, t_Category_ID, t_Supply_ID, t_StartTime, t_EndTime, t_id);
+                        DateTime t_RowInsertTime = (DateTime)reader["RowInsertTime"];
+                        DateTime t_RowUpdateTime = (DateTime)reader["RowUpdateTime"];
+                        Action tmp = new Action(t_Name, t_Discount, t_Category_ID, t_Supply_ID, t_StartTime, t_EndTime, t_RowInsertTime, t_RowUpdateTime, t_id);
 
                         ActionList.Add(tmp);
                     }
@@ -56,9 +58,7 @@ namespace ActionManager
                 connectionSql.Open();
                 string sqlsatrtdate = tempObj.StartTime.ToString("yyyy-MM-dd");
                 string sqlenddate = tempObj.EndTime.ToString("yyyy-MM-dd");
-                //string sqlsatrtdate = tempObj.StartTime.ToString("MM-dd-yyyy");
-                //tring sqlenddate = tempObj.EndTime.ToString("MM-dd-yyyy");
-                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[Category ID],[Supply ID]) VALUES('{tempObj.Name}',"+ sqlsatrtdate+","+ sqlenddate+$", {tempObj.Discount}, {tempObj.Category_ID}, {tempObj.Supply_ID})";
+                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[Category ID],[Supply ID]) VALUES('{tempObj.Name}'," + sqlsatrtdate + "," + sqlenddate + $", {tempObj.Discount}, {tempObj.Category_ID}, {tempObj.Supply_ID})";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
@@ -89,7 +89,7 @@ namespace ActionManager
 
 
 
-        public List<Action> GetActions()
+        public List<Action> GetEnteties()
         {
             return ActionList;
         }
@@ -99,27 +99,18 @@ namespace ActionManager
             return ActionList[index];
         }
 
-        public void ChangeName(int id, string name)
+        public void UpdateField(string Table,string Field,string NewValue,int id)
         {
             using (SqlConnection connectionSql = new SqlConnection(connStr))
             {
 
                 connectionSql.Open();
-                string CommandText = $"UPDATE Action SET Name ='{name}' WHERE Id={id} ";
+                string CommandText = $"UPDATE {Table} SET {Field} ='{NewValue}' WHERE Id={id} ";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
-
             }
-            for(int i = 0; i < ActionList.Count; i++)
-            {
-                if (ActionList[i].Id == id)
-                {
-                    ActionList[i].Name = name;
-                }
-            }
-
-
+      
         }
     }
 }
