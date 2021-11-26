@@ -1,22 +1,27 @@
-﻿using System.Configuration;
-using System;
+﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using DTO;
 
-
 namespace DAL
 {
-    public class CategoryRep : IRepository<Category>
+    public class GoodsRep : IRepository<Goods>
     {
-        List<Category> CategoryList;
+        List<Goods> GoodsList;
         //protected string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
         protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=Trade v.2;Integrated Security=True";
 
-        public CategoryRep()
+        public GoodsRep()
         {
-            CategoryList = new List<Category>();
+            GoodsList = new List<Goods>();
+            ReadFromDB();
+
+        }
+        public void RefreshList()
+        {
+            GoodsList.Clear();
             ReadFromDB();
         }
         public void ReadFromDB()
@@ -26,75 +31,71 @@ namespace DAL
                 using (SqlCommand comm = connectionSql.CreateCommand())
                 {
                     connectionSql.Open();
-                    comm.CommandText = "select CategoryId, Name, RowInsertTime, RowUpdateTime from Category";
-
+                    comm.CommandText = "select SupplyId,Name,Description,Price,CategoryID, RowInsertTime, RowUpdateTime from Supply";
                     SqlDataReader reader = comm.ExecuteReader();
                     while (reader.Read())
                     {
 
-                        int tmp_Id = (int)reader["CategoryId"];
+                        int tmp_Id = (int)reader["SupplyId"];
                         string tmp_Name = (string)reader["Name"];
+                        string tmp_Description = (string)reader["Description"];
+                        float tmp_Price = float.Parse(Convert.ToString(reader["Price"]));
+                        int tmp_CategoryId = (int)reader["CategoryID"];
                         DateTime tmp_RowInsertTime = (DateTime)reader["RowInsertTime"];
                         DateTime tmp_RowUpdateTime = (DateTime)reader["RowUpdateTime"];
-                        Category tmp = new Category(tmp_Name, tmp_RowInsertTime, tmp_RowUpdateTime, tmp_Id);
-                        CategoryList.Add(tmp);
+                        Goods tmp = new Goods(tmp_Name, tmp_Description, tmp_Price, tmp_CategoryId, tmp_RowInsertTime, tmp_RowUpdateTime, tmp_Id);
+                        GoodsList.Add(tmp);
                     }
                 }
             }
 
         }
-        public void AddObj(Category tmpObj)
+        public void AddObj(Goods tmpObj)
         {
-            CategoryList.Add(tmpObj);
+            GoodsList.Add(tmpObj);
             using (SqlConnection connectionSql = new SqlConnection(connStr))
             {
-
                 connectionSql.Open();
-                string CommandText = $"INSERT INTO Category([Name]) VALUES({tmpObj.Name})";
+                string CommandText = $"INSERT INTO Supply(Name,Description,Price,CategoryID)VALUES('{tmpObj.Name}','{tmpObj.Description}',{tmpObj.Price},{tmpObj.CategoryId})";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
             }
-            CategoryList.Clear();
+            GoodsList.Clear();
             ReadFromDB();
         }
-        public void RefreshList()
-        {
-            CategoryList.Clear();
-            ReadFromDB();
-        }
+
         public void DeleteObject(int id)
         {
-            for (int i = 0; i < CategoryList.Count(); i++)
+            for (int i = 0; i < GoodsList.Count(); i++)
             {
-                if (i == id)
+                if (GoodsList[i].Id == id)
                 {
-                    CategoryList.RemoveAt(i);
+                    GoodsList.RemoveAt(i);
                 }
             }
             using (SqlConnection connectionSql = new SqlConnection(connStr))
             {
 
                 connectionSql.Open();
-                string CommandText = $"DELETE FROM Category WHERE CategoryId={id}";
+                string CommandText = $"DELETE FROM Supply WHERE SupplyId={id}";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
-
             }
-
         }
 
 
 
-        public List<Category> GetEnteties()
+
+        public List<Goods> GetEnteties()
         {
-            return CategoryList;
+            return GoodsList;
         }
 
-        public Category GetObj(int index)
+        public Goods GetObj(int index)
         {
-            return CategoryList[index];
+            return GoodsList[index];
         }
         public void UpdateField(string Table, string Field, string NewValue, int id)
         {

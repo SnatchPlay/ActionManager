@@ -1,23 +1,28 @@
 ﻿using System;
-using System.Configuration;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DTO;
 
-namespace DAL
+namespace DAL.Repository
 {
-    public class SupplyRep : IRepository<Supply>
+    public class TypeRep:IRepository<TypeDTO>
     {
-        List<Supply> SupplyList;
-        protected string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-        // private string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=TradingCompany;Integrated Security=True";
+        List<TypeDTO> TypeList;
+        //protected string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+        protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=Trade v.2;Integrated Security=True";
 
-        public SupplyRep()
+        public TypeRep()
         {
-            SupplyList = new List<Supply>();
+            TypeList = new List<TypeDTO>();
             ReadFromDB();
-
+        }
+        public void RefreshList()
+        {
+            TypeList.Clear();
+            ReadFromDB();
         }
         public void ReadFromDB()
         {
@@ -26,71 +31,71 @@ namespace DAL
                 using (SqlCommand comm = connectionSql.CreateCommand())
                 {
                     connectionSql.Open();
-                    comm.CommandText = "select SupplyId,Name,Description,Price,CategoryID, RowInsertTime, RowUpdateTime from Supply";
+                    comm.CommandText = "select TypeId, Name, RowInsertTime, RowUpdateTime from Type";
+
                     SqlDataReader reader = comm.ExecuteReader();
                     while (reader.Read())
                     {
 
-                        int tmp_Id = (int)reader["SupplyId"];
+                        int tmp_Id = (int)reader["TypeId"];
                         string tmp_Name = (string)reader["Name"];
-                        string tmp_Description = (string)reader["Description"];
-                        float tmp_Price = float.Parse(Convert.ToString(reader["Price"]));
-                        int tmp_CategoryId = (int)reader["CategoryID"];
                         DateTime tmp_RowInsertTime = (DateTime)reader["RowInsertTime"];
                         DateTime tmp_RowUpdateTime = (DateTime)reader["RowUpdateTime"];
-                        Supply tmp = new Supply(tmp_Name, tmp_Description, tmp_Price, tmp_CategoryId, tmp_RowInsertTime, tmp_RowUpdateTime, tmp_Id);
-                        SupplyList.Add(tmp);
+                        TypeDTO tmp = new TypeDTO(tmp_Name, tmp_RowInsertTime, tmp_RowUpdateTime, tmp_Id);
+                        TypeList.Add(tmp);
                     }
                 }
             }
 
         }
-        public void AddObj(Supply tmpObj)
+        public void AddObj(TypeDTO tmpObj)
         {
-            SupplyList.Add(tmpObj);
+            TypeList.Add(tmpObj);
             using (SqlConnection connectionSql = new SqlConnection(connStr))
             {
+
                 connectionSql.Open();
-                string CommandText = $"INSERT INTO Supply(Name,Description,Price,CategoryID)VALUES('{tmpObj.Name}','{tmpObj.Description}',{tmpObj.Price},{tmpObj.CategoryId})";
+                string CommandText = $"INSERT INTO Type([Name]) VALUES({tmpObj.Name})";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
             }
-            SupplyList.Clear();
+            TypeList.Clear();
             ReadFromDB();
         }
 
         public void DeleteObject(int id)
         {
-            for (int i = 0; i < SupplyList.Count(); i++)
+            for (int i = 0; i < TypeList.Count(); i++)
             {
-                if (SupplyList[i].Id == id)
+                if (i == id)
                 {
-                    SupplyList.RemoveAt(i);
+                    TypeList.RemoveAt(i);
                 }
             }
             using (SqlConnection connectionSql = new SqlConnection(connStr))
             {
 
                 connectionSql.Open();
-                string CommandText = $"DELETE FROM Supply WHERE SupplyId={id}";
+                string CommandText = $"DELETE FROM Type WHERE TypeId={id}";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
+
             }
+
         }
 
 
 
-
-        public List<Supply> GetEnteties()
+        public List<TypeDTO> GetEnteties()
         {
-            return SupplyList;
+            return TypeList;
         }
 
-        public Supply GetObj(int index)
+        public TypeDTO GetObj(int index)
         {
-            return SupplyList[index];
+            return TypeList[index];
         }
         public void UpdateField(string Table, string Field, string NewValue, int id)
         {

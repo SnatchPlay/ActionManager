@@ -3,7 +3,7 @@ using System;
 
 using DAL;
 using DTO;
-using Action = DTO.Action;
+using ActionDTO = DTO.ActionDTO;
 using System.Linq;
 
 namespace TestAction
@@ -11,9 +11,9 @@ namespace TestAction
     [TestClass]
     public class UnitTest1
     {
-        public IRepository<Action> actionRep = new ActionRep();
+        public IRepository<ActionDTO> actionRep = new ActionRep();
         public IRepository<Category> categoryRep = new CategoryRep();
-        public IRepository<Supply> supplyRep = new SupplyRep();
+        public IRepository<Goods> supplyRep = new GoodsRep();
         [TestMethod]
         public void TestGetAction()
         {

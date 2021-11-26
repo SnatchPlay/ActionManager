@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL;
 using DTO;
-using Action = DTO.Action;
+using ActionDTO = DTO.ActionDTO;
 
 namespace ActionManager.Repository
 {
     public class Command
     {
-        public IRepository<Action> actionRep=new ActionRep();
+        public IRepository<ActionDTO> actionRep=new ActionRep();
         public IRepository<Category> categoryRep =new CategoryRep();
-        public IRepository<Supply> supplyRep =new SupplyRep();
+        public IRepository<Goods> supplyRep =new GoodsRep();
         //--------------------------------------------------------------------------------------------------------
         public void AddAction()
         {
@@ -31,7 +31,7 @@ namespace ActionManager.Repository
             DateTime endtime = Convert.ToDateTime(Console.ReadLine());
             DateTime rowinsert = DateTime.UtcNow;
             DateTime rowupdate = DateTime.UtcNow;
-            Action tmp = new Action(name, discount, CategoryId, SupplyId, starttime, endtime,rowinsert,rowupdate);
+            ActionDTO tmp = new ActionDTO(name, discount, CategoryId, SupplyId, starttime, endtime,rowinsert,rowupdate);
             actionRep.AddObj(tmp);
         }
         public void AddCategory()
@@ -53,7 +53,7 @@ namespace ActionManager.Repository
             int CategoryId = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Type description:");
             string descr = Console.ReadLine();
-            Supply tmp;
+            Goods tmp;
             DateTime rowinsert = DateTime.UtcNow;
             DateTime rowupdate = DateTime.UtcNow;
             tmp = new Supply(name, descr, price, CategoryId, rowinsert, rowupdate);

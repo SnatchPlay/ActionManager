@@ -4,19 +4,19 @@ using System.Data.SqlClient;
 using System.Linq;
 using DTO;
 using System.Configuration;
-using Action = DTO.Action;
+
 
 namespace DAL
 {
-    public class ActionRep : IRepository<Action>
+    public class ActionRep : IRepository<ActionDTO>
     {
-        List<Action> ActionList;
-        protected string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-        //protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=TradingCompany;Integrated Security=True";
+        List<ActionDTO> ActionList;
+        protected string connStr = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+        //protected string connStr = "Data Source=DESKTOP-SO70MLO;Initial Catalog=Trade v.2;Integrated Security=True";
 
         public ActionRep()
         {
-            ActionList = new List<Action>();
+            ActionList = new List<ActionDTO>();
             ReadFromDB();
         }
         public void ReadFromDB()
@@ -26,7 +26,7 @@ namespace DAL
                 using (SqlCommand comm = connectionSql.CreateCommand())
                 {
                     connectionSql.Open();
-                    comm.CommandText = "select Id, Name, [Start Time], [End Time], Discount, [Category ID], [Supply ID], RowInsertTime, RowUpdateTime from Action";
+                    comm.CommandText = "select Id, Name, [Start Time], [End Time], Discount, [TypeId], RowInsertTime, RowUpdateTime from Action";
 
                     SqlDataReader reader = comm.ExecuteReader();
                     while (reader.Read())
@@ -37,11 +37,11 @@ namespace DAL
                         DateTime t_StartTime = (DateTime)reader["Start Time"];
                         DateTime t_EndTime = (DateTime)reader["End Time"];
                         float t_Discount = float.Parse(Convert.ToString(reader["Discount"]));
-                        int t_Category_ID = (int)reader["Category ID"];
-                        int t_Supply_ID = (int)reader["Supply ID"];
+                        int t_Type_Id = (int)reader["TypeId"];
+                        
                         DateTime t_RowInsertTime = (DateTime)reader["RowInsertTime"];
                         DateTime t_RowUpdateTime = (DateTime)reader["RowUpdateTime"];
-                        Action tmp = new Action(t_Name, t_Discount, t_Category_ID, t_Supply_ID, t_StartTime, t_EndTime, t_RowInsertTime, t_RowUpdateTime, t_id);
+                        ActionDTO tmp = new ActionDTO(t_Name, t_Discount, t_Type_Id, t_StartTime, t_EndTime, t_RowInsertTime, t_RowUpdateTime, t_id);
 
                         ActionList.Add(tmp);
                     }
@@ -49,7 +49,7 @@ namespace DAL
             }
 
         }
-        public void AddObj(Action tempObj)
+        public void AddObj(ActionDTO tempObj)
         {
             ActionList.Add(tempObj);
             using (SqlConnection connectionSql = new SqlConnection(connStr))
@@ -58,7 +58,7 @@ namespace DAL
                 connectionSql.Open();
                 string sqlsatrtdate = tempObj.StartTime.ToString("yyyy-MM-dd");
                 string sqlenddate = tempObj.EndTime.ToString("yyyy-MM-dd");
-                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[Category ID],[Supply ID]) VALUES('{tempObj.Name}'," + sqlsatrtdate + "," + sqlenddate + $", {tempObj.Discount}, {tempObj.Category_ID}, {tempObj.Supply_ID})";
+                string CommandText = $"INSERT INTO Action([Name],[Start Time],[End Time],[Discount],[TypeId]) VALUES('{tempObj.Name}'," + sqlsatrtdate + "," + sqlenddate + $", {tempObj.Discount}, {tempObj.Type_ID})";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();
@@ -89,12 +89,16 @@ namespace DAL
 
 
 
-        public List<Action> GetEnteties()
+        public List<ActionDTO> GetEnteties()
         {
             return ActionList;
         }
-
-        public Action GetObj(int index)
+        public void RefreshList()
+        {
+            ActionList.Clear ();
+            ReadFromDB();
+        }
+        public ActionDTO GetObj(int index)
         {
             return ActionList[index];
         }

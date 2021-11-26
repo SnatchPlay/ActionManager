@@ -14,5 +14,6 @@ namespace DAL
         void ReadFromDB();
         T GetObj(int id);
         void UpdateField(string Table, string Field, string NewValue, int id);
+        void RefreshList();
     }
 }
