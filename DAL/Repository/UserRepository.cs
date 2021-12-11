@@ -25,7 +25,7 @@ namespace DAL.Repository
                 using (SqlCommand comm = connectionSql.CreateCommand())
                 {
                     connectionSql.Open();
-                    comm.CommandText = "SELECT [UserId],[Login],[Email],[Password],[Salt],[RowInsertTime],[RowUpdateTime] FROM [User]";
+                    comm.CommandText = "SELECT [UserId],[Login],[Email],[Password],[Salt],[RowInsertTime],[RowUpdateTime],[RoleId] FROM [User]";
 
                     SqlDataReader reader = comm.ExecuteReader();
                     while (reader.Read())
@@ -38,8 +38,9 @@ namespace DAL.Repository
                         Guid t_salt = (Guid)reader["Salt"];
                         DateTime t_insert = (DateTime)reader["RowInsertTime"];
                         DateTime t_update = (DateTime)reader["RowUpdateTime"];
+                        int t_roleid= (int)reader["RoleId"];
 
-                        User tmp = new User(t_login,t_password,t_email,t_salt,t_insert,t_update,t_id);
+                        User tmp = new User(t_login,t_password,t_email,t_salt,t_insert,t_update,t_roleid,t_id);
 
                         UserList.Add(tmp);
                     }
@@ -58,7 +59,7 @@ namespace DAL.Repository
                 string sqlenddate = tempObj.RowUpdateTime.ToString("yyyy-MM-dd");
                 string pass = BitConverter.ToString(tempObj.Password).Replace("-", "").ToLower();
                 string pss = "0x" + pass;
-                string CommandText = $"INSERT INTO [User] ([Login],[Email],[Password],[Salt],[RowInsertTime],[RowUpdateTime]) VALUES('{tempObj.Login}','{tempObj.Email}',{pss},'{tempObj.Salt}','{sqlsatrtdate}','{sqlenddate}')";
+                string CommandText = $"INSERT INTO [User] ([Login],[Email],[Password],[Salt],[RowInsertTime],[RowUpdateTime],[RoleId]) VALUES('{tempObj.Login}','{tempObj.Email}',{pss},'{tempObj.Salt}','{sqlsatrtdate}','{sqlenddate}','{tempObj.RoleId}')";
                 SqlCommand comm = new SqlCommand(CommandText, connectionSql);
                 comm.ExecuteNonQuery();
                 connectionSql.Close();

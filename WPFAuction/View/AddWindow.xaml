@@ -1,0 +1,22 @@
+﻿<Window x:Class="WPFAuction.AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFAuction"
+        mc:Ignorable="d"
+        Title="AddWindow" Height="450" Width="800">
+    <Grid>
+        <Label Content="Name:" HorizontalAlignment="Left" Height="46" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+        <TextBox x:Name="NameTextBox"  HorizontalAlignment="Left" Height="46" Margin="211,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="217"/>
+        <Label Content="Discount:" HorizontalAlignment="Left" Height="46" Margin="10,84,0,0" VerticalAlignment="Top" Width="161" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+        <TextBox x:Name="DiscountTextBox"  HorizontalAlignment="Left" Height="46" Margin="211,84,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="217"/>
+        <Label Content="Start Time:" HorizontalAlignment="Left" Height="46" Margin="10,171,0,0" VerticalAlignment="Top" Width="177" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+        <Label Content="End Time:" HorizontalAlignment="Left" Height="46" Margin="497,171,0,0" VerticalAlignment="Top" Width="177" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+        <DatePicker HorizontalAlignment="Left" Height="22" Margin="10,240,0,0" VerticalAlignment="Top" Width="161"/>
+        <DatePicker HorizontalAlignment="Left" Height="22" Margin="505,240,0,0" VerticalAlignment="Top" Width="161"/>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="265,217,400,149"/>
+        <Button x:Name="ConfirmButton" Content="Confirm" Style="{DynamicResource ButtonStyle1}" Template="{StaticResource btTemplate}" HorizontalAlignment="Left" Height="72" Margin="492,352,0,0" VerticalAlignment="Top" Width="205"/>
+
+    </Grid>
+</Window>

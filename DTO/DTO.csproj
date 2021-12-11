@@ -84,6 +84,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Goods.cs" />
+    <Compile Include="RoleDTO.cs" />
     <Compile Include="TypeDTO.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

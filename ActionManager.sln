@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{EE1BEF43-7F1A-4086-96D6-7D324955B997}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFAuction", "WPFAuction\WPFAuction.csproj", "{D32A7226-8D96-4205-B1F1-27729AD50757}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{EE1BEF43-7F1A-4086-96D6-7D324955B997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE1BEF43-7F1A-4086-96D6-7D324955B997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE1BEF43-7F1A-4086-96D6-7D324955B997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32A7226-8D96-4205-B1F1-27729AD50757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32A7226-8D96-4205-B1F1-27729AD50757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32A7226-8D96-4205-B1F1-27729AD50757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32A7226-8D96-4205-B1F1-27729AD50757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

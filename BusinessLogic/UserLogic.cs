@@ -26,7 +26,7 @@ namespace BusinessLogic
             }
             Guid salt = Guid.NewGuid();
             DateTime dateTime = DateTime.Now;
-            User user = new User(Login, hash(Password, salt.ToString()), Email, salt, dateTime, dateTime);
+            User user = new User(Login, hash(Password, salt.ToString()), Email, salt, dateTime, dateTime,3);
             repository.AddObj(user);
         }
         public bool UserLogin(string Login,string password)
@@ -34,7 +34,7 @@ namespace BusinessLogic
             foreach(User user in users)
             {
 
-                if(user.Login == Login && (checkpass(hash(password, user.Salt.ToString()),user.Password)==true)) { return true; }
+                if((user.Login == Login) && ((checkpass(hash(password, user.Salt.ToString()),user.Password)==true))&&(checkrole(Login)==true)) { return true; }
             }
             return false;
 
@@ -55,6 +55,17 @@ namespace BusinessLogic
                 }
             }
             return true;
+        }
+        public bool checkrole(string Login)
+        {
+            foreach(User user in users)
+            {
+                if ((user.Login == Login) && (user.RoleId == 1))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

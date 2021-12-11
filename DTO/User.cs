@@ -15,7 +15,8 @@ namespace DTO
         public Guid Salt { get; set; }
         public DateTime RowInsertTime { get; set; }
         public DateTime RowUpdateTime { get; set; }
-        public User(string Login,byte[] Password,string Email,Guid Salt,DateTime RowInsertTime,DateTime RowUpdateTime,int id=0)
+        public int RoleId { get; set; }
+        public User(string Login,byte[] Password,string Email,Guid Salt,DateTime RowInsertTime,DateTime RowUpdateTime,int roleid,int id=0)
         {
             this.Login = Login;
             this.Password = Password;
@@ -23,6 +24,7 @@ namespace DTO
             this.Salt = Salt;
             this.RowInsertTime = RowInsertTime;
             this.RowUpdateTime = RowUpdateTime;
+            this.RoleId = roleid;
             this.Id = id;
 
         }

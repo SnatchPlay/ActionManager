@@ -1,0 +1,75 @@
+﻿<Window x:Class="WPFAuction.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFAuction" xmlns:viewmodels="clr-namespace:WPFAuction.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="All Actions">
+
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFFE3E3" Offset="0.003"/>
+                            <GradientStop Color="#FFFF1D1D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <DataGrid x:Name="actiongrid"  SelectedItem="{Binding SelectedAction}" HorizontalAlignment="Left" Height="229" Margin="10,10,0,0" VerticalAlignment="Top" Width="580" ItemsSource="{Binding ActionList}" Grid.ColumnSpan="2" AutoGenerateColumns="True" IsReadOnly="True" Background="#FFE29494"/>
+                    <Button x:Name="Past" Style="{DynamicResource ButtonStyle1}" Command="{Binding GetPast}" Template="{StaticResource ResourceKey=btTemplate}" Content="Past Actions" HorizontalAlignment="Left" Height="42" Margin="598,10,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
+                    <Button x:Name="All" Style="{DynamicResource ButtonStyle1}" Command="{Binding AllCommand}" Template="{StaticResource ResourceKey=btTemplate}" Content="All Actions" HorizontalAlignment="Left" Height="42" Margin="598,60,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
+                    <Button x:Name="Future" Style="{DynamicResource ButtonStyle1}" Command="{Binding FutureCommand}" Template="{StaticResource ResourceKey=btTemplate}" Content="Future Actions" HorizontalAlignment="Left" Height="42" Margin="598,107,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
+                    <Button x:Name="Active" Style="{DynamicResource ButtonStyle1}" Command="{Binding ActiveCommand}" Template="{StaticResource ResourceKey=btTemplate}" Content="Active Actions" HorizontalAlignment="Left" Height="42" Margin="598,161,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add Actions">
+                <Grid Background="#FFD5F9CB">
+                    <Label Content="Name:" HorizontalAlignment="Left" Height="46" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"  />
+                    <TextBox x:Name="NameTextBox" Text="{Binding TypedName}"  HorizontalAlignment="Left" Height="46" Margin="211,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="217" Background="White"/>
+                    <Label Content="Discount:" HorizontalAlignment="Left" Height="46" Margin="10,84,0,0" VerticalAlignment="Top" Width="161" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+                    <TextBox x:Name="DiscountTextBox"  HorizontalAlignment="Left" Height="46" Margin="211,84,0,0" TextWrapping="Wrap" Text="{Binding TypedDiscount}" VerticalAlignment="Top" Width="217"/>
+                    <Label Content="Start Time:" HorizontalAlignment="Left" Height="46" Margin="10,171,0,0" VerticalAlignment="Top" Width="177" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+                    <Label Content="End Time:" HorizontalAlignment="Left" Height="46" Margin="497,171,0,0" VerticalAlignment="Top" Width="177" FontFamily="Bahnschrift" FontSize="32" FontWeight="Bold"/>
+                    <DatePicker DisplayDate="1/1/2021" DisplayDateStart="1/1/2021" HorizontalAlignment="Left" Height="22" Margin="10,240,0,0" VerticalAlignment="Top" Width="161" SelectedDate="{Binding StartTime}"/>
+                    <DatePicker HorizontalAlignment="Left " DisplayDateStart="1/1/2021" SelectedDate="{Binding EndTime}" Height="22" Margin="505,240,0,0" VerticalAlignment="Top" Width="161" />
+                    <ComboBox  SelectedItem="{Binding SelectedCategory}" ItemsSource="{Binding TypeNames}"  Margin="252,236,366,118"/>
+                    <Button x:Name="ConfirmButton" Command="{Binding AddAction}" Content="Confirm" Style="{DynamicResource ButtonStyle1}" Template="{StaticResource btTemplate}" HorizontalAlignment="Left" Height="72" Margin="483,324,0,0" VerticalAlignment="Top" Width="205"/>
+
+
+                </Grid>
+            </TabItem>
+            <TabItem HorizontalAlignment="Center" Height="20" Header="Edit action" VerticalAlignment="Center" >
+                <Grid Background="#FFFFC2DA">
+                    <ComboBox ItemsSource="{Binding PropertyName }" SelectedItem="{Binding SelectedProperty}" HorizontalAlignment="Left" Height="21" Margin="60,96,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.5,0.5">
+                        <ComboBox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </ComboBox.RenderTransform>
+                    </ComboBox>
+                    <Button Content="Confirm changes" Style="{DynamicResource ButtonStyle1}" Template="{StaticResource btTemplate}" Command="{Binding EditCommand}" HorizontalAlignment="Left" Height="63" Margin="297,265,0,0" VerticalAlignment="Top" Width="185"/>
+                    <TextBox HorizontalAlignment="Left" Height="57" Margin="297,146,0,0" TextWrapping="Wrap" Text="{Binding GetNewValue}" VerticalAlignment="Top" Width="185"/>
+                    <Label Content="New Value:" HorizontalAlignment="Left" Height="36" Margin="292,105,0,0" VerticalAlignment="Top" Width="190" FontFamily="Bahnschrift" FontSize="20" FontWeight="Bold"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem HorizontalAlignment="Center" Height="20" Header="Goods" VerticalAlignment="Center" >
+                <Grid Background="#FFD0AB7D">
+                    <Label  Content="List of Goods" HorizontalAlignment="Left" Height="52" Margin="120,10,0,0" VerticalAlignment="Top" Width="310" FontFamily="Bahnschrift" FontSize="48" FontWeight="Bold"/>
+                    <DataGrid HorizontalAlignment="Left" ItemsSource="{Binding GoodsList}" SelectedItem="{Binding SelectedGoods}" Height="223" Margin="10,67,0,0" VerticalAlignment="Top" Width="529" d:ItemsSource="{d:SampleData ItemCount=5}" Background="#FFD6A4A4"/>
+                    <Button x:Name="AddToAction" Command="{Binding AddGoods}" Content="Add to action" Style="{DynamicResource ButtonStyle1}" Template="{StaticResource btTemplate}" HorizontalAlignment="Left" Height="69" Margin="576,323,0,0" VerticalAlignment="Top" Width="172"/>
+                    <Label Content="Id of Action:"  HorizontalAlignment="Left" Height="24" Margin="16,304,0,0" VerticalAlignment="Top" Width="154" FontFamily="Bahnschrift" FontSize="16" FontWeight="Bold"/>
+                    <TextBox x:Name="idactiontextbox" Text="{Binding SelectedActionId}" HorizontalAlignment="Left" Height="34" Margin="16,340,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="154"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+
+</Window>

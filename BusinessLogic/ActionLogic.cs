@@ -17,6 +17,15 @@ namespace BusinessLogic
         List<ActionDTO> actionList;
         
         public ActionLogic() { actionList = actionrep.GetEnteties(); }
+        public List<string> PropertyNames()
+        {
+            List<string> propertyNames = new List<string>();
+            propertyNames.Add("Name");
+            propertyNames.Add("Discount");
+            propertyNames.Add("Start Time");
+            propertyNames.Add("End Time");
+            return propertyNames;
+        }
         public List<ActionDTO> GetPastAction()
         {
             List<ActionDTO> pastAction = new List<ActionDTO>();
